@@ -219,7 +219,7 @@ class EventSource {
     let line = '';
 
     for (let i = 0; i < parts.length; i++) {
-      line = parts[i].trim();
+      line = parts[i];
       if (line.startsWith('event')) {
         type = line.replace(/event:?\s*/, '');
       } else if (line.startsWith('retry')) {
@@ -228,7 +228,9 @@ class EventSource {
           this.interval = retry;
         }
       } else if (line.startsWith('data')) {
-        data.push(line.replace(/data:?\s*/, ''));
+        // Only remove the 'data:' and the first space after the colon, preserve the rest
+        const match = /^data:?( ?)(.*)$/.exec(line);
+        data.push(match ? match[2] : '');
       } else if (line.startsWith('id')) {
         id = line.replace(/id:?\s*/, '');
         if (id !== '') {
