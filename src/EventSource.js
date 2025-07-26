@@ -229,8 +229,8 @@ class EventSource {
         }
       } else if (line.startsWith('data')) {
         // Only remove the 'data:' and the first space after the colon, preserve the rest
-        const match = /^data:?( ?)(.*)$/.exec(line);
-        data.push(match ? match[2] : '');
+        const content = line.replace(/^data:( ?)/, '');
+        data.push(content);
       } else if (line.startsWith('id')) {
         id = line.replace(/id:?\s*/, '');
         if (id !== '') {
